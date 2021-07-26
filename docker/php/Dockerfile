@@ -21,8 +21,9 @@ RUN apt-get update && apt-get install -y \
 ENV HOME /var/www/html
 ENV DOCKER_PHP ${HOME}/docker/php
 
-COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
-COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
+#COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY docker/php/vhost.conf /etc/apache2/sites-available/000-default.conf
+#COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
