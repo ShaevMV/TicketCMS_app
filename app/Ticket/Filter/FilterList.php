@@ -50,8 +50,7 @@ final class FilterList
     public function __construct(
         ModelJoinService $joinService,
         FilterService $filterService
-    )
-    {
+    ) {
         $this->joinService = $joinService;
         $this->filterService = $filterService;
     }

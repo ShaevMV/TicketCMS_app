@@ -60,7 +60,6 @@ final class FestivalRepository extends BaseRepository
             return Festival::fromState($arrayData->toArray());
         }
         throw new OutOfBoundsException('Active festival not found');
-
     }
 
     /**

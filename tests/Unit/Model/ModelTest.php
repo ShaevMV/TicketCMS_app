@@ -49,8 +49,10 @@ class ModelTest extends TestCase
                 ]) > 0);
 
         $festival = $this->model::find($this->id);
-
-        self::assertEquals(1, $festival->status);
+        self::assertNotNull($festival);
+        if (null !== $festival) {
+            self::assertEquals(1, $festival->status);
+        }
     }
 
     /**

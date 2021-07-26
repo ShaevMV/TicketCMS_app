@@ -20,6 +20,7 @@ class TypeRegistrationTest extends TestCase
 {
     use DatabaseTransactions;
 
+    /** @var TypeRegistrationRepository */
     protected $typeRegistrationRepository;
 
     /**

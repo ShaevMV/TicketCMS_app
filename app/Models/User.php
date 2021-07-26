@@ -11,6 +11,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property ?string email
  * @method static first()
  * @method static create(array|string[] $array_merge)
+ * @method static where(string $string, $id)
  */
 class User extends Authenticatable implements JWTSubject
 {

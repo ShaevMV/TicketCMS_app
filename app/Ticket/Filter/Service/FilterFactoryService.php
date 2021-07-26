@@ -59,8 +59,7 @@ final class FilterFactoryService
      */
     public static function initFilter(
         FilterItem $filterItem
-    ): FilterFieldsAbstract
-    {
+    ): FilterFieldsAbstract {
         switch ($filterItem->getType()) {
             case self::INTEGER_TYPE:
                 $result = new FilterInteger($filterItem);

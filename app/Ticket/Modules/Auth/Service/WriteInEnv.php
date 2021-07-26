@@ -66,10 +66,10 @@ final class WriteInEnv
         if (false !== $filePath && $this->isIsset($key, $filePath)) {
             $envValue = env($key);
             return file_put_contents($path, str_replace(
-                    "{$key}=" . $envValue ?? null,
-                    "{$key}={$value}",
-                    $filePath
-                )) !== false;
+                "{$key}=" . $envValue ?? null,
+                "{$key}={$value}",
+                $filePath
+            )) !== false;
         }
 
         return file_put_contents($path, "{$key}={$value}" . PHP_EOL, FILE_APPEND) !== false;

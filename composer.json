@@ -13,17 +13,20 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.40",
         "laravel/tinker": "^2.5",
+        "rebing/graphql-laravel": "^7.2",
         "tymon/jwt-auth": "^1.0",
         "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "nunomaduro/larastan": "^0.7.11",
+        "phpunit/phpunit": "^9.3.3",
+        "roave/security-advisories": "dev-latest",
+        "squizlabs/php_codesniffer": "^3.6"
     },
     "autoload": {
         "psr-4": {
