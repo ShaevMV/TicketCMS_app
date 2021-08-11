@@ -8,11 +8,11 @@ use App\Models\User;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
-class UserType extends GraphQLType
+class UserDataForAuthType extends GraphQLType
 {
     protected $attributes = [
-        'name' => 'User',
-        'description' => 'A user',
+        'name' => 'UserDataForAuthType',
+        'description' => 'Данные пользователя для авторизации',
         'model' => User::class,
     ];
 
@@ -24,7 +24,7 @@ class UserType extends GraphQLType
             ],
             'email' => [
                 'type' => Type::string(),
-                'description' => 'The email of user',
+                'description' => 'Email',
                 'resolve' => function ($root, $args) {
                     // If you want to resolve the field yourself,
                     // it can be done here
@@ -34,12 +34,6 @@ class UserType extends GraphQLType
             'name' => [
                 'type' => Type::string(),
             ],
-            // Uses the 'getIsMeAttribute' function on our custom User model
-            'isMe' => [
-                'type' => Type::boolean(),
-                'description' => 'True, if the queried user is the current user',
-                'selectable' => false, // Does not try to query this from the database
-            ]
         ];
     }
 

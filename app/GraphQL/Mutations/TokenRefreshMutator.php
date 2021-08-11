@@ -18,6 +18,11 @@ class TokenRefreshMutator extends Mutation
 {
     private AuthService $authService;
 
+    protected $attributes = [
+        'name' => 'tokenRefresh',
+        'description' => 'Перезапрос токина',
+    ];
+
     public function __construct(AuthService $authService)
     {
         $this->authService = $authService;

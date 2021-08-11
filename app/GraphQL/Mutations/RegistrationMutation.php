@@ -19,10 +19,15 @@ use Rebing\GraphQL\Error\AuthorizationError;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
 
-class CreateUserMutation extends Mutation
+class RegistrationMutation extends Mutation
 {
     private AuthService $authService;
     private UserService $userService;
+
+    protected $attributes = [
+        'name' => 'registration',
+        'description' => 'Регистрация нового пользователя',
+    ];
 
     public function __construct(AuthService $authService, UserService $userService)
     {
@@ -42,21 +47,25 @@ class CreateUserMutation extends Mutation
                 'name' => 'email',
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'email', 'unique:users,email'],
+                'description' => 'Email пользователя',
             ],
             'name' => [
                 'name' => 'name',
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'max:250'],
+                'description' => 'Имя пользователя',
             ],
             'password' => [
                 'name' => 'password',
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'confirmed', 'min:6'],
+                'description' => 'Пароль пользователя для авторизации',
             ],
             'password_confirmation' => [
                 'name' => 'password_confirmation',
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required'],
+                'description' => 'Повтор пароля',
             ],
         ];
     }

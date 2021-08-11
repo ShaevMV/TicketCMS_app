@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use App\GraphQL\Mutations\CreateUserMutation;
+use App\GraphQL\Mutations\RegistrationMutation;
 use App\GraphQL\Mutations\TokenRefreshMutator;
 use App\GraphQL\Types\TokenType;
 use Rebing\GraphQL\GraphQL;
 use Rebing\GraphQL\GraphQLController;
 use Rebing\GraphQL\Support\PaginationType;
 use Rebing\GraphQL\Support\SimplePaginationType;
-use App\GraphQL\Types\UserType;
+use App\GraphQL\Types\UserDataForAuthType;
 use App\GraphQL\Mutations\AuthMutator;
 return [
     // The prefix for routes
@@ -108,6 +108,7 @@ return [
     //      ],
     //  ]
     //
+    'schema' => 'default',
     'schemas' => [
         'default' => [
             'query' => [
@@ -115,7 +116,7 @@ return [
             ],
             'mutation' => [
                 'auth' => AuthMutator::class,
-                'createUser' => CreateUserMutation::class,
+                'registration' => RegistrationMutation::class,
                 'tokenRefresh' => TokenRefreshMutator::class,
             ],
             'middleware' => [],
@@ -130,7 +131,7 @@ return [
     //
     //
     'types' => [
-        'user' => UserType::class,
+        'user' => UserDataForAuthType::class,
         'token' => TokenType::class,
     ],
 

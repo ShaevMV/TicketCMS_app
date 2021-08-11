@@ -11,7 +11,7 @@ class TokenType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'Token',
-        'description' => 'Token for auth user',
+        'description' => 'Токен для авторизации',
     ];
 
     public function fields(): array
@@ -19,15 +19,15 @@ class TokenType extends GraphQLType
         return [
             'accessToken' => [
                 'type' => Type::string(),
-                'description' => 'Token for auth user',
+                'description' => 'Токен для авторизации',
             ],
             'tokenType' => [
                 'type' => Type::string(),
-                'description' => 'Type token',
+                'description' => 'Тип авторизации',
             ],
             'expiresIn' => [
                 'type' => Type::int(),
-                'description' => 'Time live token',
+                'description' => 'Время жизни токена',
             ],
         ];
     }

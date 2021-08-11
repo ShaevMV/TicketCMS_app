@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Models\User;
 use App\Ticket\Modules\Auth\Entity\CredentialsDto;
 use App\Ticket\Modules\Auth\Exception\ExceptionAuth;
 use App\Ticket\Modules\Auth\Service\AuthService;
@@ -18,6 +19,11 @@ class AuthMutator extends Mutation
 {
     private AuthService $authService;
 
+    protected $attributes = [
+        'name' => 'Auth',
+        'description' => 'Авторизация пользователя',
+    ];
+
     public function __construct(AuthService $authService)
     {
         $this->authService = $authService;
@@ -30,11 +36,19 @@ class AuthMutator extends Mutation
                 'name' => 'email',
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'email'],
+                'description' => 'Email пользователя для авторизации',
             ],
             'password' => [
                 'name' => 'password',
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required'],
+                'description' => 'Пароль пользователя для авторизации',
+            ],
+            'isRememberMe' => [
+                'type' => Type::boolean(),
+                'default' => false,
+                'description' => 'Флаг выбора того что пользователь нажал галочку запомнить меня',
+                'selectable' => false, // Does not try to query this from the database
             ]
         ];
     }
