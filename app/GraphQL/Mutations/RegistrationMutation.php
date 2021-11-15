@@ -43,17 +43,17 @@ class RegistrationMutation extends Mutation
     public function args(): array
     {
         return [
-            'email' => [
-                'name' => 'email',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'email', 'unique:users,email'],
-                'description' => 'Email пользователя',
-            ],
             'name' => [
                 'name' => 'name',
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'max:250'],
                 'description' => 'Имя пользователя',
+            ],
+            'email' => [
+                'name' => 'email',
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['required', 'email', 'unique:users'],
+                'description' => 'Email пользователя',
             ],
             'password' => [
                 'name' => 'password',
@@ -67,6 +67,20 @@ class RegistrationMutation extends Mutation
                 'rules' => ['required'],
                 'description' => 'Повтор пароля',
             ],
+        ];
+    }
+
+
+    public function validationErrorMessages(array $args = []): array
+    {
+        return [
+            'name.required' => 'Пожалуйста введите своё имя',
+            'name.string' => 'Ваше имя должно быть строкой',
+            'email.required' => 'Пожалуйста введите своё email',
+            'email.email' => 'Пожалуйста, введите действительный email',
+            'email.unique' => 'Извините, этот адрес электронной почты уже используется',
+            'password.confirmed' => 'Пароль не уникален',
+            'password.required' => 'Пароль не может быть пустым',
         ];
     }
 
@@ -97,4 +111,5 @@ class RegistrationMutation extends Mutation
             'token' => $tokenEntity->toArray()
         ];
     }
+
 }
