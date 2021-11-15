@@ -12,7 +12,7 @@ class UserDataForAuthType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'UserDataForAuthType',
-        'description' => 'Данные пользователя для авторизации',
+        'description' => 'Данные пользователя',
         'model' => User::class,
     ];
 
@@ -24,12 +24,7 @@ class UserDataForAuthType extends GraphQLType
             ],
             'email' => [
                 'type' => Type::string(),
-                'description' => 'Email',
-                'resolve' => function ($root, $args) {
-                    // If you want to resolve the field yourself,
-                    // it can be done here
-                    return strtolower($root->email);
-                }
+                'description' => 'Email'
             ],
             'name' => [
                 'type' => Type::string(),
@@ -39,8 +34,9 @@ class UserDataForAuthType extends GraphQLType
 
     // You can also resolve a field by declaring a method in the class
     // with the following format resolve[FIELD_NAME]Field()
-    protected function resolveEmailField($root, $args): string
+/*    protected function resolveEmailField($root, $args): string
     {
-        return strtolower($root->email);
-    }
+        $a= 4;
+        return strtolower($args->email);
+    }*/
 }

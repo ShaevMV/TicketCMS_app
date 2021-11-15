@@ -5,12 +5,14 @@ declare(strict_types=1);
 use App\GraphQL\Mutations\RegistrationMutation;
 use App\GraphQL\Mutations\TokenRefreshMutator;
 use App\GraphQL\Types\TokenType;
+use App\GraphQL\Types\UserAfterRegistrationType;
 use Rebing\GraphQL\GraphQL;
 use Rebing\GraphQL\GraphQLController;
 use Rebing\GraphQL\Support\PaginationType;
 use Rebing\GraphQL\Support\SimplePaginationType;
 use App\GraphQL\Types\UserDataForAuthType;
 use App\GraphQL\Mutations\AuthMutator;
+
 return [
     // The prefix for routes
     'prefix' => 'graphql',
@@ -133,6 +135,7 @@ return [
     'types' => [
         'user' => UserDataForAuthType::class,
         'token' => TokenType::class,
+        'userAfterRegistration' => UserAfterRegistrationType::class
     ],
 
     // The types will be loaded on demand. Default is to load all types on each request

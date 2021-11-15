@@ -43,12 +43,9 @@ final class FestivalRepository extends BaseRepository
     /**
      * Вывести фестиваль который проходит в данный момент
      *
-     * @return EntityInterface
-     * @throws Exception
-     *
      * @throws OutOfBoundsException
      */
-    public function getActive(): EntityInterface
+    public function getActive(): Festival
     {
         $arrayData = $this->model
             ::where('date_start', '<=', Carbon::today()->toDateString())
@@ -59,6 +56,7 @@ final class FestivalRepository extends BaseRepository
         if ($arrayData instanceof Model) {
             return Festival::fromState($arrayData->toArray());
         }
+
         throw new OutOfBoundsException('Active festival not found');
     }
 

@@ -17,24 +17,8 @@ use Webpatser\Uuid\Uuid;
  */
 abstract class AbstractionEntity implements EntityInterface
 {
-    /** @var string Строковый тип данных в колонке */
-    public const TYPE_STRING = 'string';
-
-    /** @var string Числовой тип */
-    public const TYPE_INT = 'int';
-    /** @var string Логический тип */
-    public const TYPE_BOOL = 'bool';
-
-    /** @var string Тип по порядку */
-    public const TYPE_IN_SERIES = 'inSeries';
-
-    /** @var string Тип дата */
-    public const TYPE_DATE = 'date';
-
     /**
      * Вывести сущность в виде массива
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -43,7 +27,7 @@ abstract class AbstractionEntity implements EntityInterface
         $array = [];
         foreach ($vars as $key => $value) {
             if ($value instanceof EntityInterface) {
-                $array += $value->toArray() ?? [];
+                $array += $value->toArray();
             } elseif ($value instanceof EntityDataInterface || $value instanceof Uuid || $value instanceof Carbon) {
                 //TODO: Вынести в отдельный класс, перебросить зависимость на детей
                 $array[ltrim($key)] = (string)$value;

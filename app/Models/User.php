@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Webpatser\Uuid\Uuid;
 
 /**
  * @property ?string email
@@ -16,6 +18,38 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
+
+    /**
+     * Перевод primary key в Uuid
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (BaseModel $post) {
+            $post->{$post->getKeyName()} = (string)Uuid::generate();
+        });
+    }
+
+    /**
+     * Отключить увеличения идентификатора
+     *
+     * @return bool
+     */
+    public function getIncrementing(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Перевод идентификатора в строку
+     *
+     * @return string
+     */
+    public function getKeyType(): string
+    {
+        return 'string';
+    }
 
     /**
      * The attributes that are mass assignable.

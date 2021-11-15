@@ -152,8 +152,6 @@ final class FestivalStatus extends AbstractionEntityData
 
     /**
      * Активировать
-     *
-     * @return void
      */
     public function active(): void
     {
@@ -168,5 +166,16 @@ final class FestivalStatus extends AbstractionEntityData
     {
         $this->id = self::STATE_DRAFT_ID;
         $this->name = self::STATE_DRAFT;
+    }
+
+    public function changeActive(): self
+    {
+        if($this->id === self::STATE_DRAFT_ID) {
+            $this->active();
+        } else {
+            $this->cancel();
+        }
+
+        return $this;
     }
 }

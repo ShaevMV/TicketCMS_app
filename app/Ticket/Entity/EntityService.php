@@ -26,7 +26,7 @@ class EntityService
      */
     public static function getNotEmptyFields(EntityInterface $entity): array
     {
-        $fields = array_filter($entity->toArray() ?? [], function ($element) {
+        $fields = array_filter($entity->toArray() ?? [], static function ($element) {
             return !empty($element);
         });
 

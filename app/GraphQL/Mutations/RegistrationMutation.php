@@ -37,7 +37,7 @@ class RegistrationMutation extends Mutation
 
     public function type(): GraphQLType
     {
-        return GraphQL::type('token');
+        return GraphQL::type('userAfterRegistration');
     }
 
     public function args(): array
@@ -78,22 +78,23 @@ class RegistrationMutation extends Mutation
      * @param Closure $getSelectFields
      * @return array
      * @throws AuthorizationError
-     * @throws Exception
      */
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): array
     {
         $newUserArr = Arr::only($args, ['email', 'password', 'name']);
 
-        if (!$this->userService->createUser(UserEntity::fromState($newUserArr))) {
-            throw new AuthorizationError('Не получилось создать пользователя');
-        }
-
         try {
+            $userEntity = $this->userService->createUser(UserEntity::fromState($newUserArr));
             $tokenEntity = $this->authService->getTokenUser(CredentialsDto::fromState($newUserArr));
         } catch (ExceptionAuth $e) {
             throw new AuthorizationError('Не верный логин или пароль');
+        } catch (Exception $exception) {
+            throw new AuthorizationError('Не получилось создать пользователя');
         }
 
-        return $tokenEntity->toArray();
+        return [
+            'user' => $userEntity->toArray(),
+            'token' => $tokenEntity->toArray()
+        ];
     }
 }

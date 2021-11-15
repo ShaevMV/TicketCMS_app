@@ -1,0 +1,64 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Mutation {
+    "Авторизация пользователя"
+    auth(
+        "Email пользователя для авторизации"
+        email: String!,
+        "Флаг выбора того что пользователь нажал галочку запомнить меня"
+        isRememberMe: Boolean,
+        "Пароль пользователя для авторизации"
+        password: String!
+    ): Token
+    "Регистрация нового пользователя"
+    registration(
+        "Email пользователя"
+        email: String!,
+        "Имя пользователя"
+        name: String!,
+        "Пароль пользователя для авторизации"
+        password: String!,
+        "Повтор пароля"
+        password_confirmation: String!
+    ): UserDataForRegistration
+    "Перезапрос токина"
+    tokenRefresh: Token
+}
+
+type Query {
+    users(
+        "email пользователя"
+        email: String,
+        "UUid пользователя"
+        id: Int
+    ): [UserDataForAuthType]
+}
+
+"Токен для авторизации"
+type Token {
+    "Токен для авторизации"
+    accessToken: String
+    "Время жизни токена"
+    expiresIn: Int
+    "Тип авторизации"
+    tokenType: String
+}
+
+"Данные пользователя"
+type UserDataForAuthType {
+    "Email"
+    email: String
+    id: String
+    name: String
+}
+
+"Данные пользователя после регистрации"
+type UserDataForRegistration {
+    token: Token
+    user: UserDataForAuthType
+}

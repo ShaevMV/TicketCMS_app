@@ -14,23 +14,16 @@ use Webpatser\Uuid\Uuid;
  * @package App\Ticket\Entity
  *
  * @property Uuid $id
- * @property string $title
  */
 interface EntityInterface
 {
     /**
      * Создания сущности из массива
-     *
-     * @param array $data
-     *
-     * @return mixed
      */
     public static function fromState(array $data);
 
     /**
      * Преобразовать значения сущности в массив
-     *
-     * @return array|null
      */
     public function toArray(): ?array;
 
@@ -42,9 +35,7 @@ interface EntityInterface
     public function __get(string $name);
 
     /**
-     * Высети объект в виде json
-     *
-     * @return string
+     * Вывести объект в виде json
      */
     public function toJson(): string;
 }

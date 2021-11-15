@@ -18,17 +18,6 @@ use InvalidArgumentException;
  */
 final class DeltaPrice extends AbstractionEntity implements EntityDataInterface
 {
-    private const COLUMNS_LIST = [
-        'delta_price' => [
-            'value' => 'Изменения цены',
-            'type' => self::TYPE_INT,
-        ],
-        'delta_type' => [
-            'value' => 'Тип изменения цены',
-            'type' => self::TYPE_STRING,
-        ],
-    ];
-
     /**
      * Изменения цены
      *
@@ -139,11 +128,4 @@ final class DeltaPrice extends AbstractionEntity implements EntityDataInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getColumnsList(): array
-    {
-        return self::COLUMNS_LIST;
-    }
 }

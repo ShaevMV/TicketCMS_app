@@ -19,17 +19,6 @@ use RuntimeException;
  */
 final class DateBetween extends AbstractionEntity
 {
-    private const COLUMNS_LIST = [
-        'date_start' => [
-            'value' => 'Дата начала',
-            'type' => self::TYPE_DATE,
-        ],
-        'date_end' => [
-            'value' => 'Дата окончание',
-            'type' => self::TYPE_DATE,
-        ],
-    ];
-
     /**
      * Начальная дата
      *
@@ -129,11 +118,4 @@ final class DateBetween extends AbstractionEntity
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getColumnsList(): array
-    {
-        return self::COLUMNS_LIST;
-    }
 }

@@ -6,6 +6,7 @@ namespace App\Ticket\Modules\User\Service;
 
 use App\Ticket\Modules\User\Entity\UserEntity;
 use App\Ticket\Modules\User\Repository\UserRepository;
+use Exception;
 use Webpatser\Uuid\Uuid;
 
 final class UserService
@@ -17,10 +18,14 @@ final class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function createUser(UserEntity $userEntity): bool
+    /**
+     * @throws Exception
+     */
+    public function createUser(UserEntity $userEntity): UserEntity
     {
         $userEntity->setPassword(bcrypt($userEntity->getPassword()));
+        $uuid = $this->userRepository->create($userEntity);
 
-        return $this->userRepository->create($userEntity) instanceof Uuid;
+        return $userEntity->setId($uuid);
     }
 }

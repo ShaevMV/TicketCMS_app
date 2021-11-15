@@ -10,18 +10,17 @@ use App\Ticket\Filter\FilterList;
 use App\Ticket\Model\Model;
 use App\Ticket\Modules\Festival\Entity\Festival;
 use App\Ticket\Pagination\Pagination;
+use App\Ticket\Repository\Exceptions\RepositoryRuntimeException;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as BuilderQuery;
+use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use OutOfBoundsException;
 use Webpatser\Uuid\Uuid;
 
 /**
- * Class BaseRepository
- *
  * Базовый класс репозитория
- *
- * @package App\Ticket\Repository
  */
 abstract class BaseRepository implements RepositoryInterface
 {
@@ -42,21 +41,32 @@ abstract class BaseRepository implements RepositoryInterface
     /**
      * Обновить данные
      *
-     * @throws InvalidArgumentException
-     *
-     * @throws OutOfBoundsException
+     * @throws Exception
      */
     public function update(Uuid $id, EntityInterface $data): bool
     {
-        if ($this->model::whereId((string)$id)->exists() === false) {
-            throw new OutOfBoundsException(self::class . ' with id ' . (string)$id . ' does not exist');
+        DB::beginTransaction();
+        try {
+            if ($this->model::whereId((string)$id)->exists() === false) {
+                throw new OutOfBoundsException(self::class . ' with id ' . $id . ' does not exist');
+            }
+
+            $update = EntityService::getNotEmptyFields($data);
+
+            if($this->model
+                    ::where('id', '=', (string)$id)
+                    ->update($update) > 0) {
+                DB::commit();
+
+                return true;
+            }
+
+            throw new RepositoryRuntimeException($this->model->getTable() . ' не получилось обновить ' . $id);
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            throw $exception;
         }
-
-        $update = EntityService::getNotEmptyFields($data);
-
-        return $this->model
-                ::where('id', '=', (string)$id)
-                ->update($update) > 0;
     }
 
     /**
@@ -100,8 +110,6 @@ abstract class BaseRepository implements RepositoryInterface
 
     /**
      * Вывести общее кол-во записей
-     *
-     * @return int
      */
     public function getTotal(): int
     {
@@ -110,10 +118,6 @@ abstract class BaseRepository implements RepositoryInterface
 
     /**
      * Выполнить фильтрацию в модели
-     *
-     * @param FilterList|null $fields
-     *
-     * @return $this
      */
     public function setFilter(?FilterList $fields): self
     {
@@ -139,29 +143,38 @@ abstract class BaseRepository implements RepositoryInterface
 
     /**
      * Выдать сущность
-     *
-     * @param array $data
-     *
-     * @return EntityInterface
      */
     abstract protected function build(array $data): EntityInterface;
 
-    public function create(EntityInterface $entity): ?Uuid
+    /**
+     * @throws Exception
+     */
+    public function create(EntityInterface $entity): Uuid
     {
-        $data = $entity->toArray() ?? [];
-        $create = $this->model::create($data);
+        DB::beginTransaction();
+        try {
+            $data = $entity->toArray();
+            if (null === $data) {
+                throw new RepositoryRuntimeException("Entity is null");
+            }
 
-        return isset($create->id) ? Uuid::import($create->id) : null;
+            $create = $this->model::create($data);
+            if (!isset($create->id)) {
+                throw new RepositoryRuntimeException("В таблице {$this->model->getTable()} не удалось создать запись");
+            }
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollback();
+            throw $exception;
+        }
+
+        return Uuid::import($create->id);
     }
 
     /**
-     * Найти Фестиваль по его id
-     *
-     * @param Uuid $id
-     *
-     * @return EntityInterface|Festival
+     * Найти по id
      */
-    public function findById(Uuid $id)
+    public function findById(Uuid $id): EntityInterface
     {
         try {
             $arrayData = $this->model::findorfail((string)$id);
@@ -169,18 +182,27 @@ abstract class BaseRepository implements RepositoryInterface
             throw new OutOfBoundsException($this->model->getTable() . ' with id ' . $id . ' does not exist');
         }
 
-        return $this->build($arrayData->toArray() ?? []);
+        return $this->build($arrayData->toArray());
     }
 
     /**
      * Удаление записи
      *
-     * @param Uuid $id
-     *
-     * @return bool
+     * @throws Exception
      */
     public function remove(Uuid $id): bool
     {
-        return $this->model::destroy((string)$id) > 0;
+        DB::beginTransaction();
+        try {
+            if ($this->model::destroy((string)$id) > 0) {
+                DB::commit();
+            }
+
+            throw new RepositoryRuntimeException("В таблице {$this->model->getTable()} не удалось удалить запись " . $id);
+        } catch (Exception $exception) {
+            DB::rollback();
+
+            throw $exception;
+        }
     }
 }

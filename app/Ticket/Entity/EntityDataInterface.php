@@ -16,10 +16,8 @@ interface EntityDataInterface
 {
     /**
      * Преобразовать значение сущности в строку
-     *
-     * @return mixed
      */
-    public function __toString();
+    public function __toString(): string;
 
     /**
      * Высети сущность в виде json строки

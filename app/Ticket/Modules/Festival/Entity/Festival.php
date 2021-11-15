@@ -6,7 +6,7 @@ namespace App\Ticket\Modules\Festival\Entity;
 
 use App\Ticket\Date\DateBetween;
 use App\Ticket\Entity\AbstractionEntity;
-use App\Ticket\Entity\EntityInterface;
+use App\Ticket\Modules\Festival\Dto\FestivalRawDto;
 use App\Ticket\Modules\TypeRegistration\Entity\TypeRegistration;
 use Webpatser\Uuid\Uuid;
 
@@ -19,21 +19,6 @@ use Webpatser\Uuid\Uuid;
  */
 final class Festival extends AbstractionEntity
 {
-    private const COLUMNS_LIST = [
-        'id' => [
-            'value' => 'id',
-            'type' => self::TYPE_IN_SERIES,
-        ],
-        'title' => [
-            'value' => 'Название',
-            'type' => self::TYPE_STRING,
-        ],
-        'status' => [
-            'value' => 'Статус',
-            'type' => self::TYPE_STRING,
-        ],
-    ];
-
     /**
      * Идентификатор
      *
@@ -76,12 +61,7 @@ final class Festival extends AbstractionEntity
      */
     protected ?array $typeRegistration;
 
-    /**
-     * @param array $data
-     *
-     * @return DateBetween|EntityInterface|Festival
-     */
-    public static function fromState(array $data)
+    public static function fromState(array $data): self
     {
         return (new self())
             ->setId(Uuid::import($data['id']))
@@ -89,6 +69,16 @@ final class Festival extends AbstractionEntity
             ->setDescription($data['description'])
             ->setDate(DateBetween::fromState($data))
             ->setStatus(FestivalStatus::fromInt($data['status']));
+    }
+
+    public static function fromRawState(Uuid $uuid, FestivalRawDto $festivalRawDto): self
+    {
+        return (new self())
+            ->setId($uuid)
+            ->setTitle($festivalRawDto->getTitle())
+            ->setDescription($festivalRawDto->getDescription())
+            ->setDate($festivalRawDto->getDate())
+            ->setStatus($festivalRawDto->getStatus());
     }
 
     /**
@@ -112,9 +102,9 @@ final class Festival extends AbstractionEntity
     }
 
     /**
-     * @return FestivalStatus|null
+     * @return FestivalStatus
      */
-    public function getStatus(): ?FestivalStatus
+    public function getStatus(): FestivalStatus
     {
         return $this->status;
     }
@@ -209,13 +199,5 @@ final class Festival extends AbstractionEntity
         $this->description = $description;
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getColumnsList(): array
-    {
-        return self::COLUMNS_LIST;
     }
 }

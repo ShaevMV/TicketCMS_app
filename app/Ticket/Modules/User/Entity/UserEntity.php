@@ -10,16 +10,12 @@ use Webpatser\Uuid\Uuid;
 
 class UserEntity extends AbstractionEntity
 {
-    protected Uuid $id;
+    protected ?Uuid $id = null;
     protected string $name;
     protected string $email;
     protected string $password;
 
     /**
-     * @param array $data
-     *
-     * @return self
-     *
      * @throws Exception
      */
     public static function fromState(array $data): self
@@ -31,19 +27,11 @@ class UserEntity extends AbstractionEntity
             ->setPassword($data['password']);
     }
 
-    /**
-     * @return Uuid
-     */
-    public function getId(): Uuid
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
 
-    /**
-     * @param Uuid $id
-     *
-     * @return self
-     */
     public function setId(Uuid $id): self
     {
         $this->id = $id;
@@ -51,19 +39,11 @@ class UserEntity extends AbstractionEntity
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return self
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -71,38 +51,22 @@ class UserEntity extends AbstractionEntity
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     *
-     * @return self
-     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     *
-     * @return self
-     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
