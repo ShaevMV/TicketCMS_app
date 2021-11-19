@@ -162,7 +162,7 @@ abstract class BaseRepository implements RepositoryInterface
             if (!isset($create->id)) {
                 throw new RepositoryRuntimeException("В таблице {$this->model->getTable()} не удалось создать запись");
             }
-            DB::commit();
+            //DB::commit();
         } catch (Exception $exception) {
             DB::rollback();
             throw $exception;

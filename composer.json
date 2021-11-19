@@ -15,6 +15,7 @@
         "laravel/framework": "^8.40",
         "laravel/tinker": "^2.5",
         "rebing/graphql-laravel": "^7.2",
+        "sentry/sentry-laravel": "^2.10",
         "tymon/jwt-auth": "^1.0",
         "webpatser/laravel-uuid": "^3.0"
     },
