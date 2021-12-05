@@ -9,6 +9,7 @@ use App\Ticket\Entity\EntityInterface;
 use App\Ticket\Modules\User\Entity\UserEntity;
 use App\Ticket\Repository\BaseRepository;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserRepository extends BaseRepository
 {
@@ -20,6 +21,17 @@ class UserRepository extends BaseRepository
     public function __construct(User $user)
     {
         $this->model = $user;
+    }
+
+    /**
+     * @throws Exception
+     * @throws ModelNotFoundException
+     */
+    public function getByEmail(string $email): EntityInterface
+    {
+        $result = $this->model::where('email', $email)->firstOrFail();
+
+        return $this->build($result->toArray());
     }
 
     /**

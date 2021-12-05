@@ -4,6 +4,7 @@ namespace App\Ticket\Modules\PromoCode\Model;
 
 use App\Ticket\Model\Model;
 use App\Ticket\Modules\Festival\Model\FestivalModel;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
@@ -37,6 +38,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PromoCodeModel whereId($value)
  * @method static Builder|PromoCodeModel whereName($value)
  * @method static Builder|PromoCodeModel whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class PromoCodeModel extends Model
 {

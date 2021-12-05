@@ -21,7 +21,7 @@ class UserEntity extends AbstractionEntity
     public static function fromState(array $data): self
     {
         return (new self())
-            ->setId(isset($data['id']) ? Uuid::import($data['id']) : Uuid::generate())
+            ->setId(isset($data['id']) ? Uuid::import($data['id']) : null)
             ->setName($data['name'])
             ->setEmail($data['email'])
             ->setPassword($data['password']);

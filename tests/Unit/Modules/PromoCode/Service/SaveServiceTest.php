@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\PromoCode\Service;
+namespace Tests\Unit\Modules\PromoCode\Service;
 
 use App\Ticket\Modules\PromoCode\Service\SaveService;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -9,7 +9,7 @@ use Tests\TestCase;
 class SaveServiceTest extends TestCase
 {
     /** @var SaveService */
-    //private SaveService $saveService;
+    private SaveService $saveService;
 
     /**
      * A basic unit test example.
@@ -27,6 +27,6 @@ class SaveServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        //$this->saveService = $this->app->make(SaveService::class);
+        $this->saveService = $this->app->make(SaveService::class);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Ticket\Model;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as BaseModel;
@@ -30,6 +31,7 @@ use Webpatser\Uuid\Uuid;
  * @method static Builder|Model newModelQuery()
  * @method static Builder|Model newQuery()
  * @method static Builder|Model query()
+ * @mixin Eloquent
  */
 class Model extends BaseModel
 {

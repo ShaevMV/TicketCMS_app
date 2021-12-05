@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\TypeRegistration\Service;
+namespace Tests\Unit\Modules\TypeRegistration\Service;
 
 use App\Ticket\Modules\TypeRegistration\Entity\Parameter;
 use App\Ticket\Modules\TypeRegistration\Service\SpecificationService;

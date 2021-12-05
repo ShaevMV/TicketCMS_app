@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Order\Service;
+namespace Tests\Unit\Modules\Order\Service;
 
 use App\Ticket\Modules\Order\Entity\TotalEntity;
 use App\Ticket\Modules\Order\Service\Factory\CollectiveTicketTotal;

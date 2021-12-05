@@ -17,6 +17,7 @@ use Illuminate\Database\Query\Builder as BuilderQuery;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use OutOfBoundsException;
+use Throwable;
 use Webpatser\Uuid\Uuid;
 
 /**
@@ -42,6 +43,7 @@ abstract class BaseRepository implements RepositoryInterface
      * Обновить данные
      *
      * @throws Exception
+     * @throws Throwable
      */
     public function update(Uuid $id, EntityInterface $data): bool
     {
@@ -53,7 +55,7 @@ abstract class BaseRepository implements RepositoryInterface
 
             $update = EntityService::getNotEmptyFields($data);
 
-            if($this->model
+            if ($this->model
                     ::where('id', '=', (string)$id)
                     ->update($update) > 0) {
                 DB::commit();
@@ -147,7 +149,7 @@ abstract class BaseRepository implements RepositoryInterface
     abstract protected function build(array $data): EntityInterface;
 
     /**
-     * @throws Exception
+     * @throws Exception | RepositoryRuntimeException|Throwable
      */
     public function create(EntityInterface $entity): Uuid
     {

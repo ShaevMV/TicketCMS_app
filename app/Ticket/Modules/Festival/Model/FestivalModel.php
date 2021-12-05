@@ -5,6 +5,7 @@ namespace App\Ticket\Modules\Festival\Model;
 use App\Ticket\Model\Model;
 use App\Ticket\Modules\TypeRegistration\Model\TypeRegistrationModule;
 use Database\Factories\FestivalModelFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,6 +38,8 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $type_registration_count
  * @property string|null $description Описание фестиваля
  * @method static Builder|FestivalModel whereDescription($value)
+ * @method static FestivalModelFactory factory(...$parameters)
+ * @mixin Eloquent
  */
 class FestivalModel extends Model
 {

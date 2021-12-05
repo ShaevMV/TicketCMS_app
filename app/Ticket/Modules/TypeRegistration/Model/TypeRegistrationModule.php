@@ -4,6 +4,7 @@ namespace App\Ticket\Modules\TypeRegistration\Model;
 
 use App\Ticket\Model\Model;
 use Database\Factories\TypeRegistrationFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Carbon;
@@ -24,6 +25,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|TypeRegistrationModule whereId($value)
  * @method static Builder|TypeRegistrationModule whereTitle($value)
  * @method static Builder|TypeRegistrationModule whereUpdatedAt($value)
+ * @method static TypeRegistrationFactory factory(...$parameters)
+ * @mixin Eloquent
  */
 class TypeRegistrationModule extends Model
 {

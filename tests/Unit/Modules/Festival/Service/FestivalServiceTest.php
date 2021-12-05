@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Festival\Service;
+namespace Tests\Unit\Modules\Festival\Service;
 
 use App\Ticket\Modules\Festival\Service\FestivalService;
 use App\Ticket\Pagination\Pagination;

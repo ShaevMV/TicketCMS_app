@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Ticket\Modules\User\Service;
 
 use App\Ticket\Modules\User\Entity\UserEntity;
+use App\Ticket\Modules\User\Exception\UserNotFountException;
 use App\Ticket\Modules\User\Repository\UserRepository;
 use Exception;
+use Throwable;
 use Webpatser\Uuid\Uuid;
 
 final class UserService
@@ -19,7 +21,10 @@ final class UserService
     }
 
     /**
+     * Создать нового пользователя
+     *
      * @throws Exception
+     * @throws Throwable
      */
     public function createUser(UserEntity $userEntity): UserEntity
     {

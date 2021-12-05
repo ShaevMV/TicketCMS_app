@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\PromoCode\Entity;
+namespace Tests\Unit\Modules\PromoCode\Entity;
 
 use App\Ticket\Modules\PromoCode\Entity\PromoCode;
 use Database\Seeders\FestivalSeeder;
