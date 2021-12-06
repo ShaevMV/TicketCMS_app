@@ -170,9 +170,6 @@ class FilterFieldTest extends TestCase
         ];
     }
 
-    /**
-     * @throws BindingResolutionException
-     */
     protected function setUp(): void
     {
         parent::setUp();

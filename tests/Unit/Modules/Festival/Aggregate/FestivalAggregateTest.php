@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Festival\Aggregate;
+namespace Tests\Unit\Modules\Festival\Aggregate;
 
 use App\Ticket\Modules\Festival\Aggregate\BaseFestivalsAggregate;
 use App\Ticket\Modules\Festival\Aggregate\FestivalAggregate;

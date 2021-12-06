@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
         zip \
         curl \
         unzip \
+        wget \
     && docker-php-ext-configure gd \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install pdo_mysql \
@@ -29,6 +30,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN pecl install xdebug-2.8.1 \
     && docker-php-ext-enable xdebug
+
+#Redis
+
+RUN wget https://github.com/IBM-Cloud/redli/releases/download/v0.4.4/redli_0.4.4_linux_amd64.tar.gz
+RUN tar xvf redli_0.4.4_linux_amd64.tar.gz
+RUN mv redli /usr/local/bin/
 
 RUN adduser --disabled-password --gecos "" user
 RUN chown -R user:user /var/www/html
