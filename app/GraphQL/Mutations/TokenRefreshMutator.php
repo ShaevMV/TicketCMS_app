@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
-use App\Ticket\Modules\Auth\Entity\CredentialsDto;
-use App\Ticket\Modules\Auth\Factory\AuthAggregateFactory;
-use App\Ticket\Modules\Auth\Service\AuthService;
+use App\Ticket\Modules\Auth\Aggregate\AuthAggregate;
 use App\Models\User;
 use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -23,6 +21,12 @@ class TokenRefreshMutator extends Mutation
         'name' => 'tokenRefresh',
         'description' => 'Перезапрос токина',
     ];
+    private AuthAggregate $authAggregate;
+
+    public function __construct(AuthAggregate $authAggregate)
+    {
+        $this->authAggregate = $authAggregate;
+    }
 
     public function type(): GraphQLType
     {
@@ -38,6 +42,7 @@ class TokenRefreshMutator extends Mutation
     ): array {
         /** @var JWTGuard $auth */
         $auth = Auth::guard('api');
-        return AuthAggregateFactory::getAggregate()->refreshToken($auth)->toArray();
+
+        return $this->authAggregate->refreshToken($auth)->toArray();
     }
 }

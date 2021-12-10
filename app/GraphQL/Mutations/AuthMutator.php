@@ -2,11 +2,9 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\Models\User;
+use App\Ticket\Modules\Auth\Aggregate\AuthAggregate;
 use App\Ticket\Modules\Auth\Entity\CredentialsDto;
 use App\Ticket\Modules\Auth\Exception\ExceptionAuth;
-use App\Ticket\Modules\Auth\Factory\AuthAggregateFactory;
-use App\Ticket\Modules\Auth\Service\AuthService;
 use Closure;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -22,6 +20,13 @@ class AuthMutator extends Mutation
         'name' => 'Auth',
         'description' => 'Авторизация пользователя',
     ];
+
+    private AuthAggregate $authAggregate;
+
+    public function __construct(AuthAggregate $authAggregate)
+    {
+        $this->authAggregate = $authAggregate;
+    }
 
     public function args(): array
     {
@@ -60,7 +65,7 @@ class AuthMutator extends Mutation
     {
         $credentials = Arr::only($args, ['email', 'password']);
         try {
-            $tokenEntity = AuthAggregateFactory::getAggregate(CredentialsDto::fromState($credentials))->getTokenUser();
+            $tokenEntity = $this->authAggregate->getTokenUser(CredentialsDto::fromState($credentials));
         } catch (ExceptionAuth $e) {
             throw new AuthorizationError('Не верный логин или пароль');
         }

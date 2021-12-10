@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
-use App\Ticket\Modules\Auth\Exception\ExceptionAuth;
 use App\Ticket\Modules\Auth\Service\UserRecoveryPasswordService;
-use App\Ticket\Modules\User\Service\UserService;
-use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\Type as GraphQLType;
-use Rebing\GraphQL\Error\AuthorizationError;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class RecoveryPasswordMutation extends Mutation
 {
@@ -53,22 +50,12 @@ class RecoveryPasswordMutation extends Mutation
      * @param ResolveInfo $resolveInfo
      * @param Closure $getSelectFields
      * @return array
-     * @throws AuthorizationError
+     * @throws TokenInvalidException
      */
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): array
     {
         $email = $args['email'];
 
-        if ($this->userRecoveryPasswordService->requestRestoration($email)) {
-            return [
-                'success' => true,
-                'userMessage' => '',
-            ];
-        }
-
-        return [
-            'success' => false,
-            'userMessage' => ''
-        ];
+        return $this->userRecoveryPasswordService->requestRestoration($email)->toArray();
     }
 }

@@ -5,10 +5,16 @@ declare(strict_types=1);
 namespace App\Ticket\Modules\Auth\Service;
 
 use App\Mail\RecoveryPasswordMail;
+use App\Ticket\Modules\Auth\Dto\ResponseRecoveryPasswordDto;
+use App\Ticket\Modules\Auth\Dto\UserDataForNewPasswordDto;
+use App\Ticket\Modules\Auth\Exception\DomainExceptionRecoveryPassword;
+use Hash;
+use Http\Discovery\Exception\NotFoundException;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Mail;
-use Throwable;
+use Str;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 final class UserRecoveryPasswordService
 {
@@ -16,24 +22,84 @@ final class UserRecoveryPasswordService
 
     /**
      * Отправить запрос на восстановление пароля
+     *
+     * @throws TokenInvalidException
+     * @throws NotFoundException
+     * @throws DomainExceptionRecoveryPassword
      */
-    public function requestRestoration(string $email): bool
+    public function requestRestoration(string $email): ResponseRecoveryPasswordDto
     {
+        $tokenForRestoration = '';
         $status = Password::sendResetLink([
             'email' => $email
-        ], fn(CanResetPassword $user, string $token) => $this->sendPasswordResetNotification($user, $token));
+        ], function (CanResetPassword $user, string $token) use (&$tokenForRestoration): void {
+            $this->sendPasswordResetNotification($user, $token);
+            $tokenForRestoration = $token;
+        });
 
-        return $status === Password::RESET_LINK_SENT;
+        return $this->getResponseByStatus($status)->setToken($tokenForRestoration);
     }
 
+    /**
+     * Отправка письма
+     *
+     * @param CanResetPassword $user
+     * @param string $token
+     * @return void
+     */
     private function sendPasswordResetNotification(CanResetPassword $user, string $token): void
     {
         $url = env('APP_URL') . self::URL_FOR_RECOVERY_PASSWORD . $token;
+        Mail::to($user)->send(new RecoveryPasswordMail($url));
+    }
 
-        try {
-            Mail::to($user)->send(new RecoveryPasswordMail($url));
-        } catch (Throwable $exception) {
-            $a = 4;
+    /**
+     * Вывести обработку статуса после сброса пароля
+     *
+     * @throws TokenInvalidException
+     * @throws NotFoundException
+     * @throws DomainExceptionRecoveryPassword
+     */
+    private function getResponseByStatus(string $status): ResponseRecoveryPasswordDto
+    {
+        switch ($status) {
+            case Password::RESET_LINK_SENT:
+                return new ResponseRecoveryPasswordDto(
+                    true,
+                    'На указанную вами почту отправлено письмо для восстановление пароля'
+                );
+            case Password::PASSWORD_RESET:
+                return new ResponseRecoveryPasswordDto(
+                    true,
+                    'Пароль изменен'
+                );
+            case Password::INVALID_USER:
+                throw new NotFoundException('Такой пользователь не найден');
+            case Password::INVALID_TOKEN:
+                throw new TokenInvalidException('Не верная ссылка попробуйте ещё раз');
+            case Password::RESET_THROTTLED:
+                throw new DomainExceptionRecoveryPassword('Вы уже запросили ссылку, пожалуйста проверти почту. Или свяжитесь с нами');
         }
+
+        throw new DomainExceptionRecoveryPassword('Не известная ошибка ' . $status);
+    }
+
+    /**
+     * @throws TokenInvalidException
+     */
+    public function sendNewPassword(UserDataForNewPasswordDto $dataForNewPasswordDto): ResponseRecoveryPasswordDto
+    {
+        $status = Password::reset(
+            $dataForNewPasswordDto->toArray(),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+            }
+        );
+
+        return $this->getResponseByStatus($status);
     }
 }

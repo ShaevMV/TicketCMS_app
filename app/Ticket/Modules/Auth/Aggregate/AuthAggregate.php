@@ -12,12 +12,10 @@ use Tymon\JWTAuth\JWTGuard;
 
 final class AuthAggregate
 {
-    private ?CredentialsDto $credentialsDto;
     private AuthService $authService;
 
-    public function __construct(?CredentialsDto $credentialsDto, AuthService $authService)
+    public function __construct(AuthService $authService)
     {
-        $this->credentialsDto = $credentialsDto;
         $this->authService = $authService;
     }
 
@@ -26,9 +24,9 @@ final class AuthAggregate
      *
      * @throws ExceptionAuth
      */
-    public function getTokenUser(): Token
+    public function getTokenUser(CredentialsDto $credentialsDto): Token
     {
-        return $this->authService->getTokenUser($this->credentialsDto);
+        return $this->authService->getTokenUser($credentialsDto);
     }
 
     public function refreshToken(JWTGuard $auth): Token
