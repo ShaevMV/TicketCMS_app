@@ -56,7 +56,6 @@ final class UserRecoveryPasswordService
     /**
      * Вывести обработку статуса после сброса пароля
      *
-     * @throws TokenInvalidException
      * @throws NotFoundException
      * @throws DomainExceptionRecoveryPassword
      */
@@ -74,9 +73,9 @@ final class UserRecoveryPasswordService
                     'Пароль изменен'
                 );
             case Password::INVALID_USER:
-                throw new NotFoundException('Такой пользователь не найден');
+                throw new DomainExceptionRecoveryPassword('Такой пользователь не найден');
             case Password::INVALID_TOKEN:
-                throw new TokenInvalidException('Не верная ссылка попробуйте ещё раз');
+                throw new DomainExceptionRecoveryPassword('Не верная ссылка попробуйте ещё раз');
             case Password::RESET_THROTTLED:
                 throw new DomainExceptionRecoveryPassword('Вы уже запросили ссылку, пожалуйста проверти почту. Или свяжитесь с нами');
         }

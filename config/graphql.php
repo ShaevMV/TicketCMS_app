@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use App\GraphQL\Mutations\RecoveryPasswordMutation;
 use App\GraphQL\Mutations\RegistrationMutation;
 use App\GraphQL\Mutations\TokenRefreshMutator;
+use App\GraphQL\Types\RecoveryPasswordResponseType;
 use App\GraphQL\Types\TokenType;
 use App\GraphQL\Types\UserAfterRegistrationType;
 use Rebing\GraphQL\GraphQL;
@@ -120,6 +122,7 @@ return [
                 'auth' => AuthMutator::class,
                 'registration' => RegistrationMutation::class,
                 'tokenRefresh' => TokenRefreshMutator::class,
+                'recoveryPassword' => RecoveryPasswordMutation::class,
             ],
             'middleware' => [],
             'method' => ['get', 'post'],
@@ -135,7 +138,8 @@ return [
     'types' => [
         'user' => UserDataForAuthType::class,
         'token' => TokenType::class,
-        'userAfterRegistration' => UserAfterRegistrationType::class
+        'userAfterRegistration' => UserAfterRegistrationType::class,
+        'recoveryPasswordResponse' => RecoveryPasswordResponseType::class,
     ],
 
     // The types will be loaded on demand. Default is to load all types on each request

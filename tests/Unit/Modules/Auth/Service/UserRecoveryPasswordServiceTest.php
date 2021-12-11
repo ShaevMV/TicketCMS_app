@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Modules\Auth\Service;
 
 use App\Ticket\Modules\Auth\Dto\UserDataForNewPasswordDto;
+use App\Ticket\Modules\Auth\Exception\DomainExceptionRecoveryPassword;
 use App\Ticket\Modules\Auth\Service\UserRecoveryPasswordService;
 use Database\Seeders\UserSeeder;
 use Tests\TestCase;
@@ -22,6 +23,7 @@ class UserRecoveryPasswordServiceTest extends TestCase
     /**
      * Запросить восстановление пароля
      * @throws TokenInvalidException
+     * @throws DomainExceptionRecoveryPassword
      */
     public function testRequestRestoration(): string
     {

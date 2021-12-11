@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
-use App\Ticket\Modules\Auth\Service\UserRecoveryPasswordService;
+use App\Ticket\Modules\Auth\Aggregate\AuthAggregate;
+use App\Ticket\Modules\Auth\Exception\DomainExceptionRecoveryPassword;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\Type as GraphQLType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Closure;
 
 class RecoveryPasswordMutation extends Mutation
 {
@@ -19,11 +21,11 @@ class RecoveryPasswordMutation extends Mutation
         'description' => 'Восстановление пароля пользователя',
     ];
 
-    private UserRecoveryPasswordService $userRecoveryPasswordService;
+    private AuthAggregate $authAggregate;
 
-    public function __construct(UserRecoveryPasswordService $userRecoveryPasswordService)
+    public function __construct(AuthAggregate $authAggregate)
     {
-        $this->userRecoveryPasswordService = $userRecoveryPasswordService;
+        $this->authAggregate = $authAggregate;
     }
 
     public function type(): GraphQLType
@@ -37,7 +39,7 @@ class RecoveryPasswordMutation extends Mutation
             'email' => [
                 'name' => 'email',
                 'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'email', 'unique:users'],
+                'rules' => ['required', 'email'],
                 'description' => 'Email пользователя',
             ],
         ];
@@ -51,11 +53,12 @@ class RecoveryPasswordMutation extends Mutation
      * @param Closure $getSelectFields
      * @return array
      * @throws TokenInvalidException
+     * @throws DomainExceptionRecoveryPassword
      */
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): array
     {
         $email = $args['email'];
 
-        return $this->userRecoveryPasswordService->requestRestoration($email)->toArray();
+        return $this->authAggregate->sendLinkForRecoveryPassword($email)->toArray();
     }
 }
