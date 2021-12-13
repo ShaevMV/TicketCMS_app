@@ -12,9 +12,8 @@ use Tests\TestCase;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 /**
- * + Запросить восстановление пароля
- * - Найти пользователя по email, с проверкой времени жизни hash токена
- * -
+ * + Запросить восстановление пароля.
+ * + Записать новый пароль пользователя
  */
 class UserRecoveryPasswordServiceTest extends TestCase
 {
@@ -22,7 +21,7 @@ class UserRecoveryPasswordServiceTest extends TestCase
 
     /**
      * Запросить восстановление пароля
-     * @throws TokenInvalidException
+     *
      * @throws DomainExceptionRecoveryPassword
      */
     public function testRequestRestoration(): string
@@ -35,6 +34,9 @@ class UserRecoveryPasswordServiceTest extends TestCase
     }
 
     /**
+     * Записать новый пароль пользователя
+     * @param string $token
+     * @throws DomainExceptionRecoveryPassword
      * @throws TokenInvalidException
      * @depends testRequestRestoration
      */

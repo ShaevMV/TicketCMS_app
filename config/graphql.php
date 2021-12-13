@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\GraphQL\Mutations\PasswordResetMutation;
 use App\GraphQL\Mutations\RecoveryPasswordMutation;
 use App\GraphQL\Mutations\RegistrationMutation;
 use App\GraphQL\Mutations\TokenRefreshMutator;
@@ -123,6 +124,7 @@ return [
                 'registration' => RegistrationMutation::class,
                 'tokenRefresh' => TokenRefreshMutator::class,
                 'recoveryPassword' => RecoveryPasswordMutation::class,
+                'passwordReset' => PasswordResetMutation::class
             ],
             'middleware' => [],
             'method' => ['get', 'post'],

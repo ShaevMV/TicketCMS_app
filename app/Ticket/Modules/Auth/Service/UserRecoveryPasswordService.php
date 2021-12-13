@@ -23,8 +23,8 @@ final class UserRecoveryPasswordService
     /**
      * Отправить запрос на восстановление пароля
      *
-     * @throws TokenInvalidException
-     * @throws NotFoundException
+     * @param string $email
+     * @return ResponseRecoveryPasswordDto
      * @throws DomainExceptionRecoveryPassword
      */
     public function requestRestoration(string $email): ResponseRecoveryPasswordDto
@@ -85,6 +85,7 @@ final class UserRecoveryPasswordService
 
     /**
      * @throws TokenInvalidException
+     * @throws DomainExceptionRecoveryPassword
      */
     public function sendNewPassword(UserDataForNewPasswordDto $dataForNewPasswordDto): ResponseRecoveryPasswordDto
     {

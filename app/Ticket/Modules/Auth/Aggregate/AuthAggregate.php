@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Ticket\Modules\Auth\Aggregate;
 
 use App\Ticket\Modules\Auth\Dto\ResponseRecoveryPasswordDto;
+use App\Ticket\Modules\Auth\Dto\UserDataForNewPasswordDto;
 use App\Ticket\Modules\Auth\Entity\CredentialsDto;
 use App\Ticket\Modules\Auth\Entity\Token;
 use App\Ticket\Modules\Auth\Exception\DomainExceptionRecoveryPassword;
@@ -50,11 +51,21 @@ final class AuthAggregate
     }
 
     /**
+     * @param string $email
+     * @return ResponseRecoveryPasswordDto
      * @throws DomainExceptionRecoveryPassword
-     * @throws TokenInvalidException
      */
     public function sendLinkForRecoveryPassword(string $email): ResponseRecoveryPasswordDto
     {
         return $this->userRecoveryPasswordService->requestRestoration($email);
+    }
+
+    /**
+     * @throws DomainExceptionRecoveryPassword
+     * @throws TokenInvalidException
+     */
+    public function passwordReset(UserDataForNewPasswordDto $dataForNewPasswordDto): ResponseRecoveryPasswordDto
+    {
+        return $this->userRecoveryPasswordService->sendNewPassword($dataForNewPasswordDto);
     }
 }
