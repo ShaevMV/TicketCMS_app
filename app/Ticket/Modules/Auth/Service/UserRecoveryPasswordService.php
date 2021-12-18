@@ -8,12 +8,14 @@ use App\Mail\RecoveryPasswordMail;
 use App\Ticket\Modules\Auth\Dto\ResponseRecoveryPasswordDto;
 use App\Ticket\Modules\Auth\Dto\UserDataForNewPasswordDto;
 use App\Ticket\Modules\Auth\Exception\DomainExceptionRecoveryPassword;
-use Hash;
+
 use Http\Discovery\Exception\NotFoundException;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Mail;
-use Str;
+
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 final class UserRecoveryPasswordService
@@ -36,7 +38,7 @@ final class UserRecoveryPasswordService
             $this->sendPasswordResetNotification($user, $token);
             $tokenForRestoration = $token;
         });
-
+        // TODO: refactoring
         return $this->getResponseByStatus($status)->setToken($tokenForRestoration);
     }
 
