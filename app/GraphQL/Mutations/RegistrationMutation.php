@@ -18,16 +18,16 @@ use Illuminate\Support\Arr;
 use Rebing\GraphQL\Error\AuthorizationError;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
+use Throwable;
 
 class RegistrationMutation extends Mutation
 {
-    private AuthService $authService;
-    private UserService $userService;
-
     protected $attributes = [
         'name' => 'registration',
         'description' => 'Регистрация нового пользователя',
     ];
+    private AuthService $authService;
+    private UserService $userService;
 
     public function __construct(AuthService $authService, UserService $userService)
     {
@@ -102,7 +102,7 @@ class RegistrationMutation extends Mutation
             $tokenEntity = $this->authService->getTokenUser(CredentialsDto::fromState($newUserArr));
         } catch (ExceptionAuth $e) {
             throw new AuthorizationError('Не верный логин или пароль');
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             throw new AuthorizationError('Не получилось создать пользователя');
         }
 

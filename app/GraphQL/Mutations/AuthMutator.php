@@ -1,33 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\GraphQL\Mutations;
 
-use App\Ticket\Modules\Auth\Aggregate\AuthAggregate;
-use App\Ticket\Modules\Auth\Entity\CredentialsDto;
 use App\Ticket\Modules\Auth\Exception\ExceptionAuth;
 use Closure;
-use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\Type as GraphQLType;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Bus;
+use JetBrains\PhpStorm\ArrayShape;
 use Rebing\GraphQL\Error\AuthorizationError;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
+use Ticket\Auth\Application\Authenticate\AuthenticateUserCommand;
+use Ticket\Auth\Domain\Authenticate\CredentialsDto;
 
 class AuthMutator extends Mutation
 {
+    use DispatchesJobs;
+
     protected $attributes = [
         'name' => 'Auth',
         'description' => 'Авторизация пользователя',
     ];
 
-    private AuthAggregate $authAggregate;
-
-    public function __construct(AuthAggregate $authAggregate)
-    {
-        $this->authAggregate = $authAggregate;
-    }
-
+    #[ArrayShape(['email' => "array", 'password' => "array", 'isRememberMe' => "array"])]
     public function args(): array
     {
         return [
@@ -63,14 +64,15 @@ class AuthMutator extends Mutation
      */
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): array
     {
-        $credentials = Arr::only($args, ['email', 'password']);
         try {
-            $tokenEntity = $this->authAggregate->getTokenUser(CredentialsDto::fromState($credentials));
+            $token = Bus::dispatchNow(
+                new AuthenticateUserCommand(CredentialsDto::fromState(Arr::only($args, ['email', 'password'])))
+            );
+            return $token->toArray();
         } catch (ExceptionAuth $e) {
             throw new AuthorizationError('Не верный логин или пароль');
         }
 
-        return $tokenEntity->toArray();
     }
 
     public function type(): GraphQLType

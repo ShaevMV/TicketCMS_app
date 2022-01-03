@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace App\Ticket\Modules\PromoCode\Entity\Enum;
 
-use BenSampo\Enum\Enum;
+
 
 /**
+ *
+ *  TODO: Переписать на enum
  * Class DeltaTypeEnum
  *
  * Класс Enum типов изменения цены в промокоде
  *
  * @package App\Ticket\Modules\PromoCode\Enum
  */
-final class DeltaTypeEnum extends Enum
+final class DeltaTypeEnum
 {
     /** @var string Процент */
     public const OPTION_PERCENT = 'Percent';

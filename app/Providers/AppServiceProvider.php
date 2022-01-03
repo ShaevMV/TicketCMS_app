@@ -5,6 +5,8 @@ namespace App\Providers;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Ticket\Auth\Domain\Authenticate\AuthRepository;
+use Ticket\Auth\Infrastructure\Persistence\InMemoryTokenRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->isLocal()) {
             $this->app->register(IdeHelperServiceProvider::class);
         }
+        $this->app->bind(AuthRepository::class, InMemoryTokenRepository::class);
+
     }
 
     /**
@@ -25,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Schema::defaultStringLength(191);
     }

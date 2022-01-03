@@ -9,7 +9,8 @@ use Webpatser\Uuid\Uuid;
 
 class UserSeeder extends Seeder
 {
-    public const USER_FOR_TEST = 'ShaevMV@gmail.com';
+    public const USER_LOGIN_FOR_TEST = 'ShaevMV@gmail.com';
+    public const USER_PASSWORD_FOR_TEST = 'password';
 
     /**
      * Run the database seeds.
@@ -23,7 +24,7 @@ class UserSeeder extends Seeder
         (new User())::insert([
             'id' => Uuid::generate(),
             'name' => 'Test',
-            'email' => self::USER_FOR_TEST,
+            'email' => self::USER_LOGIN_FOR_TEST,
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ]);
     }
