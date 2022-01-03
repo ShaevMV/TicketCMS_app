@@ -26,7 +26,7 @@ class UserRecoveryPasswordServiceTest extends TestCase
      */
     public function testRequestRestoration(): string
     {
-        $result = $this->userRecoveryPasswordService->requestRestoration(UserSeeder::USER_FOR_TEST);
+        $result = $this->userRecoveryPasswordService->requestRestoration(UserSeeder::USER_LOGIN_FOR_TEST);
 
         self::assertTrue($result->toArray()['success']);
 
@@ -44,7 +44,7 @@ class UserRecoveryPasswordServiceTest extends TestCase
     {
         $request = [
             'token' => $token,
-            'email' => UserSeeder::USER_FOR_TEST,
+            'email' => UserSeeder::USER_LOGIN_FOR_TEST,
             'password' => 'systempass12',
             'password_confirmation' => 'systempass12',
         ];

@@ -10,18 +10,8 @@ use Ticket\Auth\Domain\Token\Token;
 
 class AuthenticateUserCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'auth:authenticate';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Авторизация пользователя по логину и паролю';
 
     public function __construct(

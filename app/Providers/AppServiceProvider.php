@@ -6,6 +6,7 @@ use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Ticket\Auth\Domain\Authenticate\AuthRepository;
+use Ticket\Auth\Domain\Token\TokenRepository;
 use Ticket\Auth\Infrastructure\Persistence\InMemoryTokenRepository;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(IdeHelperServiceProvider::class);
         }
         $this->app->bind(AuthRepository::class, InMemoryTokenRepository::class);
-
+        $this->app->bind(TokenRepository::class, InMemoryTokenRepository::class);
     }
 
     /**

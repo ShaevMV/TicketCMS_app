@@ -27,7 +27,8 @@ final class Token extends AbstractionEntity
     {
     }
 
-    #[Pure] public static function fromState(array $data): self
+    #[Pure] 
+    public static function fromState(array $data): self
     {
         return new self(
             $data['access_token'],
