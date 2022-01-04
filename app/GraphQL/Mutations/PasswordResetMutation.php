@@ -6,7 +6,7 @@ namespace App\GraphQL\Mutations;
 
 use App\Ticket\Modules\Auth\Aggregate\AuthAggregate;
 use App\Ticket\Modules\Auth\Dto\UserDataForNewPasswordDto;
-use App\Ticket\Modules\Auth\Exception\DomainExceptionRecoveryPassword;
+use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\Type as GraphQLType;
@@ -14,7 +14,6 @@ use Illuminate\Support\Arr;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-use Closure;
 
 class PasswordResetMutation extends Mutation
 {
@@ -72,7 +71,6 @@ class PasswordResetMutation extends Mutation
      * @param ResolveInfo $resolveInfo
      * @param Closure $getSelectFields
      * @return array
-     * @throws DomainExceptionRecoveryPassword
      * @throws TokenInvalidException
      */
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): array

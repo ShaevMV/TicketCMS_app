@@ -2,34 +2,29 @@
 
 declare(strict_types=1);
 
-namespace App\Ticket\Modules\Auth\Service;
+namespace Ticket\Auth\Application\RecoveryPassword;
 
 use App\Mail\RecoveryPasswordMail;
-use App\Ticket\Modules\Auth\Dto\ResponseRecoveryPasswordDto;
-use App\Ticket\Modules\Auth\Dto\UserDataForNewPasswordDto;
-use App\Ticket\Modules\Auth\Exception\DomainExceptionRecoveryPassword;
-
 use Http\Discovery\Exception\NotFoundException;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Ticket\Auth\Domain\RecoveryPassword\DomainExceptionRecoveryPassword;
+use Ticket\Auth\Domain\RecoveryPassword\ResponseRecoveryPassword;
+use Ticket\Auth\Domain\RecoveryPassword\UserDataForNewPassword;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
-final class UserRecoveryPasswordService
+class RecoveryPasswordUser
 {
     private const URL_FOR_RECOVERY_PASSWORD = 'recoveryPassword/';
 
     /**
      * Отправить запрос на восстановление пароля
-     *
-     * @param string $email
-     * @return ResponseRecoveryPasswordDto
      * @throws DomainExceptionRecoveryPassword
      */
-    public function requestRestoration(string $email): ResponseRecoveryPasswordDto
+    public function requestRestoration(string $email): ResponseRecoveryPassword
     {
         $tokenForRestoration = '';
         $status = Password::sendResetLink([
@@ -61,16 +56,16 @@ final class UserRecoveryPasswordService
      * @throws NotFoundException
      * @throws DomainExceptionRecoveryPassword
      */
-    private function getResponseByStatus(string $status): ResponseRecoveryPasswordDto
+    private function getResponseByStatus(string $status): ResponseRecoveryPassword
     {
         switch ($status) {
             case Password::RESET_LINK_SENT:
-                return new ResponseRecoveryPasswordDto(
+                return new ResponseRecoveryPassword(
                     true,
                     'На указанную вами почту отправлено письмо для восстановление пароля'
                 );
             case Password::PASSWORD_RESET:
-                return new ResponseRecoveryPasswordDto(
+                return new ResponseRecoveryPassword(
                     true,
                     'Пароль изменен'
                 );
@@ -89,11 +84,11 @@ final class UserRecoveryPasswordService
      * @throws TokenInvalidException
      * @throws DomainExceptionRecoveryPassword
      */
-    public function sendNewPassword(UserDataForNewPasswordDto $dataForNewPasswordDto): ResponseRecoveryPasswordDto
+    public function sendNewPassword(UserDataForNewPassword $dataForNewPasswordDto): ResponseRecoveryPassword
     {
         $status = Password::reset(
             $dataForNewPasswordDto->toArray(),
-            function ($user, $password) {
+            static function ($user, $password) {
                 $user->forceFill([
                     'password' => Hash::make($password)
                 ])->setRememberToken(Str::random(60));

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Ticket\Modules\Auth\Exception;
+namespace Ticket\Auth\Domain\RecoveryPassword;
 
 use GraphQL\Error\ClientAware;
 use GraphQL\Error\Error;

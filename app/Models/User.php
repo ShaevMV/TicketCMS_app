@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Database\Factories\UserFactory;
-use Eloquent;
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as BaseModel;
@@ -83,7 +83,7 @@ class User extends Authenticatable implements JWTSubject
     {
         parent::boot();
 
-        static::creating(function (BaseModel $post) {
+        static::creating(static function (BaseModel $post) {
             $post->{$post->getKeyName()} = (string)Uuid::generate();
         });
     }
@@ -113,7 +113,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return mixed
      */
-    public function getJWTIdentifier()
+    public function getJWTIdentifier(): mixed
     {
         return $this->getKey();
     }
