@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
-use App\Ticket\Modules\Auth\Exception\ExceptionAuth;
 use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
@@ -18,6 +17,7 @@ use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
 use Ticket\Auth\Application\Authenticate\AuthenticateUserCommand;
 use Ticket\Auth\Domain\Authenticate\CredentialsDto;
+use Ticket\Auth\Domain\Authenticate\ExceptionAuth;
 
 class AuthMutator extends Mutation
 {

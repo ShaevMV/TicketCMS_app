@@ -2,14 +2,15 @@
 
 namespace Ticket\Auth\Infrastructure\Persistence;
 
-use App\Ticket\Modules\Auth\Exception\ExceptionAuth;
 use Illuminate\Contracts\Container\Container;
 use Ticket\Auth\Domain\Authenticate\AuthRepository;
 use Ticket\Auth\Domain\Authenticate\CredentialsDto;
+use Ticket\Auth\Domain\Authenticate\ExceptionAuth;
 use Ticket\Auth\Domain\Token\Token;
 use Ticket\Auth\Domain\Token\TokenRepository;
 use Tymon\JWTAuth\Factory;
 use Tymon\JWTAuth\JWTGuard;
+
 use function app;
 use function auth;
 

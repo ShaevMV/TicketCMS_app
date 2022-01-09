@@ -10,7 +10,6 @@ use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 use Ticket\Auth\Application\Token\RefreshingToken;
 use Ticket\Auth\Application\Token\RefreshingTokenCommand;
-use Ticket\Auth\Domain\Authenticate\AuthRepository;
 use Ticket\Auth\Domain\Token\Token;
 use Ticket\Auth\Domain\Token\TokenRepository;
 use Ticket\Auth\Infrastructure\Persistence\InMemoryTokenRepository;

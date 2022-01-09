@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ticket\Auth\Domain;
+namespace Ticket\Auth\Domain\Authenticate;
 
 use Exception;
 

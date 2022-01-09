@@ -3,6 +3,7 @@
 namespace Ticket\Auth\Application\Token;
 
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Ticket\Auth\Domain\Token\Token;
 use Tymon\JWTAuth\JWTGuard;
 
@@ -14,7 +15,7 @@ class RefreshingTokenCommand extends Command
 
 
     public function __construct(
-        private JWTGuard $auth
+        private JWTGuard|StatefulGuard $auth
     ){
         parent::__construct();
     }

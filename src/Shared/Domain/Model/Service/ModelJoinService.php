@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Ticket\Model\Service;
+namespace Ticket\Shared\Domain\Model\Service;
 
-use Ticket\Model\Model;
+
 use BadMethodCallException;
 use Closure;
 use ErrorException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use RuntimeException;
-use Ticket\Model\ModelException;
+use Ticket\Shared\Domain\Model\Exceptions\ModelException;
+use Ticket\Shared\Domain\Model\Model;
 
 /**
  * Class ModelService

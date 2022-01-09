@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ticket\Shared\Repository;
+namespace Ticket\Shared\Domain\Repository;
 
+use App\Models\User;
 use App\Ticket\Filter\FilterList;
 use App\Ticket\Pagination\Pagination;
 use App\Ticket\Repository\Exceptions\RepositoryRuntimeException;
@@ -26,9 +27,9 @@ abstract class BaseRepository implements RepositoryInterface
     /**
      * Модель в базе данных
      *
-     * @var Model
+     * @var Model|User
      */
-    protected Model $model;
+    protected $model;
 
     /**
      * Builder для работы с базой данных
@@ -162,7 +163,7 @@ abstract class BaseRepository implements RepositoryInterface
             if (!isset($create->id)) {
                 throw new RepositoryRuntimeException("В таблице {$this->model->getTable()} не удалось создать запись");
             }
-            //DB::commit();
+            DB::commit();
         } catch (Exception $exception) {
             DB::rollback();
             throw $exception;

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
-use App\Ticket\Modules\Auth\Entity\CredentialsDto;
-use App\Ticket\Modules\Auth\Exception\ExceptionAuth;
-use App\Ticket\Modules\Auth\Service\AuthService;
 use App\Ticket\Modules\User\Entity\UserEntity;
 use App\Ticket\Modules\User\Service\UserService;
 use Closure;

@@ -16,8 +16,7 @@ class SetNewPasswordUserCommand extends Command
 
     public function __construct(
         private UserDataForNewPassword $userDataForNewPassword
-    )
-    {
+    ) {
         parent::__construct();
     }
 

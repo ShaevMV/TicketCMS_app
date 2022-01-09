@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ticket\Model;
+namespace Ticket\Shared\Domain\Model\Exceptions;
 
 use RuntimeException;
 

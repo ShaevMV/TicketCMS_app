@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ticket\Shared\Repository;
+namespace Ticket\Shared\Domain\Repository;
 
 use Ticket\Shared\Domain\Entity\EntityInterface;
 use Webpatser\Uuid\Uuid;

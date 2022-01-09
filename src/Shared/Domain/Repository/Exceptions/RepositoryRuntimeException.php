@@ -1,6 +1,6 @@
 <?php
 
-namespace Ticket\Shared\Repository\Exceptions;
+namespace Ticket\Shared\Domain\Repository\Exceptions;
 
 use RuntimeException;
 
