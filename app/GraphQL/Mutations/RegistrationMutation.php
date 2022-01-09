@@ -26,14 +26,7 @@ class RegistrationMutation extends Mutation
         'name' => 'registration',
         'description' => 'Регистрация нового пользователя',
     ];
-    private AuthService $authService;
-    private UserService $userService;
 
-    public function __construct(AuthService $authService, UserService $userService)
-    {
-        $this->authService = $authService;
-        $this->userService = $userService;
-    }
 
     public function type(): GraphQLType
     {
@@ -95,7 +88,7 @@ class RegistrationMutation extends Mutation
      */
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): array
     {
-        $newUserArr = Arr::only($args, ['email', 'password', 'name']);
+        /*$newUserArr = Arr::only($args, ['email', 'password', 'name']);
 
         try {
             $userEntity = $this->userService->createUser(UserEntity::fromState($newUserArr));
@@ -109,7 +102,8 @@ class RegistrationMutation extends Mutation
         return [
             'user' => $userEntity->toArray(),
             'token' => $tokenEntity->toArray()
-        ];
+        ];*/
+        return [];
     }
 
 }

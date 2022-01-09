@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Ticket\Auth\Tests\RecoveryPassword;
 
-use Database\Factories\UserFactory;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
 use Ticket\Auth\Application\RecoveryPassword\RecoveryPasswordUser;
-use Ticket\Auth\Application\RecoveryPassword\RecoveryPasswordUserCommand;
+use Ticket\Auth\Application\RecoveryPassword\SetNewPasswordUserCommand;
 use Ticket\Auth\Domain\RecoveryPassword\DomainExceptionRecoveryPassword;
+use Ticket\Auth\Domain\RecoveryPassword\UserDataForNewPassword;
 
-class RecoveryPasswordTest extends TestCase
+class SetNewPasswordTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -22,17 +22,17 @@ class RecoveryPasswordTest extends TestCase
     /**
      * @throws DomainExceptionRecoveryPassword
      */
-    public function testRequestRestoration(): void
+    public function testSendNewPassword(): void
     {
-        $result = $this->recoveryPasswordUser->requestRestoration(UserSeeder::USER_LOGIN_FOR_TEST);
+        $token = $this->recoveryPasswordUser->requestRestoration(UserSeeder::USER_LOGIN_FOR_TEST)->getToken();
+        $userDataForNewPassword = new UserDataForNewPassword(
+            $token,
+            UserSeeder::USER_LOGIN_FOR_TEST,
+            'test',
+            'test'
+        );
 
-        self::assertTrue($result->success);
-    }
-
-    public function testCommand(): void
-    {
-        $result = Bus::dispatchNow(new RecoveryPasswordUserCommand(UserFactory::EMAIL_ADMIN_FOR_TEST));
-
+        $result = Bus::dispatchNow(new SetNewPasswordUserCommand($userDataForNewPassword));
         self::assertTrue($result->success);
     }
 

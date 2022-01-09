@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->isLocal()) {
             $this->app->register(IdeHelperServiceProvider::class);
         }
+
         $this->app->bind(AuthRepository::class, InMemoryTokenRepository::class);
         $this->app->bind(TokenRepository::class, InMemoryTokenRepository::class);
     }

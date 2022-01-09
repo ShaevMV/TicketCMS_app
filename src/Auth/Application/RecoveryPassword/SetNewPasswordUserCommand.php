@@ -1,30 +1,32 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Ticket\Auth\Application\RecoveryPassword;
 
 use Illuminate\Console\Command;
 use Ticket\Auth\Domain\RecoveryPassword\DomainExceptionRecoveryPassword;
 use Ticket\Auth\Domain\RecoveryPassword\ResponseRecoveryPassword;
+use Ticket\Auth\Domain\RecoveryPassword\UserDataForNewPassword;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
-class RecoveryPasswordUserCommand extends Command
+class SetNewPasswordUserCommand extends Command
 {
-    protected $signature = 'auth:recoveryPassword';
+    protected $signature = 'auth:setNewPassword';
 
-    protected $description = 'Отправить ссылку на восстановление пароля';
+    protected $description = 'Задать новый пароль';
 
     public function __construct(
-        private string $email
-    ) {
+        private UserDataForNewPassword $userDataForNewPassword
+    )
+    {
         parent::__construct();
     }
 
     /**
      * @throws DomainExceptionRecoveryPassword
+     * @throws TokenInvalidException
      */
     public function handle(RecoveryPasswordUser $recoveryPasswordUser): ResponseRecoveryPassword
     {
-        return $recoveryPasswordUser->requestRestoration($this->email);
+        return $recoveryPasswordUser->sendNewPassword($this->userDataForNewPassword);
     }
 }
