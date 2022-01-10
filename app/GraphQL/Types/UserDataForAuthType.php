@@ -6,6 +6,7 @@ namespace App\GraphQL\Types;
 
 use App\Models\User;
 use GraphQL\Type\Definition\Type;
+use JetBrains\PhpStorm\ArrayShape;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class UserDataForAuthType extends GraphQLType
@@ -16,6 +17,7 @@ class UserDataForAuthType extends GraphQLType
         'model' => User::class,
     ];
 
+    #[ArrayShape(['id' => "array", 'email' => "array", 'name' => "array"])]
     public function fields(): array
     {
         return [

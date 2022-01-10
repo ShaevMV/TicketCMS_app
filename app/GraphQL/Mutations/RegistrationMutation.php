@@ -33,7 +33,7 @@ class RegistrationMutation extends Mutation
 
     public function type(): GraphQLType
     {
-        return GraphQL::type('userAfterRegistration');
+        return GraphQL::type('userData');
     }
 
     #[ArrayShape(['name' => "array", 'email' => "array", 'password' => "array", 'password_confirmation' => "array"])]

@@ -8,7 +8,7 @@ use App\GraphQL\Mutations\RegistrationMutation;
 use App\GraphQL\Mutations\TokenRefreshMutator;
 use App\GraphQL\Types\RecoveryPasswordResponseType;
 use App\GraphQL\Types\TokenType;
-use App\GraphQL\Types\UserAfterRegistrationType;
+use App\GraphQL\Types\UserDataType;
 use Rebing\GraphQL\GraphQL;
 use Rebing\GraphQL\GraphQLController;
 use Rebing\GraphQL\Support\PaginationType;
@@ -140,7 +140,7 @@ return [
     'types' => [
         'user' => UserDataForAuthType::class,
         'token' => TokenType::class,
-        'userAfterRegistration' => UserAfterRegistrationType::class,
+        'userData' => UserDataType::class,
         'recoveryPasswordResponse' => RecoveryPasswordResponseType::class,
     ],
 

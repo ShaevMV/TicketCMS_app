@@ -14,7 +14,7 @@ class GetUser
     {
     }
 
-    public function get(Uuid $uuid): UserAggregate
+    public function findById(Uuid $uuid): UserAggregate
     {
         $userEntity = $this->userRepository->findById($uuid);
         if ($userEntity instanceof UserEntity) {
