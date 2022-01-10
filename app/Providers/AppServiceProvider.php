@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Schema;
 use Ticket\Auth\Domain\Authenticate\AuthRepository;
 use Ticket\Auth\Domain\Token\TokenRepository;
 use Ticket\Auth\Infrastructure\Persistence\InMemoryTokenRepository;
+use Ticket\User\Domain\UserRepository;
+use Ticket\User\Infrastructure\Persistence\InMemoryUserRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(AuthRepository::class, InMemoryTokenRepository::class);
         $this->app->bind(TokenRepository::class, InMemoryTokenRepository::class);
+
+        $this->app->bind(UserRepository::class, InMemoryUserRepository::class);
     }
 
     /**

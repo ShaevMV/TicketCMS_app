@@ -34,6 +34,6 @@ class RegistrationUserTest extends TestCase
         self::assertNotEmpty($resultAfterRegistration->getId());
         /** @var UserAggregate $result */
         $result = Bus::dispatchNow(new GetUserCommand($resultAfterRegistration->getId()));
-        self::assertEquals('test', $result->getUserEntity()->toArray()['name']);
+        self::assertEquals('test', $result->toArray()['name']);
     }
 }

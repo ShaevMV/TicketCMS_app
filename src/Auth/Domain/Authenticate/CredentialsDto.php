@@ -19,11 +19,10 @@ final class CredentialsDto extends AbstractionEntity
     public function __construct(
         public string $email,
         public string $password,
-    )
-    {
-    }
+    ){}
 
-    #[Pure] public static function fromState(array $data): self
+    #[Pure]
+    public static function fromState(array $data): self
     {
         return new self(
             $data['email'],

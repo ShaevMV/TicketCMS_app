@@ -17,12 +17,8 @@ class UserAggregate
         return $this->userEntity->getId();
     }
 
-    /**
-     * @return UserEntity
-     */
-    public function getUserEntity(): UserEntity
+    public function toArray(): array
     {
-        return $this->userEntity;
+        return $this->userEntity->toArray();
     }
-
 }

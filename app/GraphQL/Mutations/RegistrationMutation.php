@@ -4,18 +4,24 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
-use App\Ticket\Modules\User\Entity\UserEntity;
-use App\Ticket\Modules\User\Service\UserService;
 use Closure;
-use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\Type as GraphQLType;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Bus;
+use JetBrains\PhpStorm\ArrayShape;
 use Rebing\GraphQL\Error\AuthorizationError;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
 use Throwable;
+use Ticket\Auth\Application\Authenticate\AuthenticateUserCommand;
+use Ticket\Auth\Domain\Authenticate\CredentialsDto;
+use Ticket\Auth\Domain\Authenticate\ExceptionAuth;
+use Ticket\Auth\Domain\Token\Token;
+use Ticket\User\Application\Registration\RegistrationUserCommand;
+use Ticket\User\Domain\UserAggregate;
+use Ticket\User\Domain\UserEntity;
 
 class RegistrationMutation extends Mutation
 {
@@ -30,6 +36,7 @@ class RegistrationMutation extends Mutation
         return GraphQL::type('userAfterRegistration');
     }
 
+    #[ArrayShape(['name' => "array", 'email' => "array", 'password' => "array", 'password_confirmation' => "array"])]
     public function args(): array
     {
         return [
@@ -61,6 +68,15 @@ class RegistrationMutation extends Mutation
     }
 
 
+    #[ArrayShape([
+        'name.required' => "string",
+        'name.string' => "string",
+        'email.required' => "string",
+        'email.email' => "string",
+        'email.unique' => "string",
+        'password.confirmed' => "string",
+        'password.required' => "string"
+    ])]
     public function validationErrorMessages(array $args = []): array
     {
         return [
@@ -83,24 +99,24 @@ class RegistrationMutation extends Mutation
      * @return array
      * @throws AuthorizationError
      */
+    #[ArrayShape(['user' => "array", 'token' => "array"])]
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): array
     {
-        /*$newUserArr = Arr::only($args, ['email', 'password', 'name']);
+        $newUserArr = Arr::only($args, ['email', 'password', 'name']);
 
         try {
-            $userEntity = $this->userService->createUser(UserEntity::fromState($newUserArr));
-            $tokenEntity = $this->authService->getTokenUser(CredentialsDto::fromState($newUserArr));
+            /** @var UserAggregate $userEntity */
+            $userEntity = Bus::dispatchNow(new RegistrationUserCommand(UserEntity::fromState($newUserArr)));
+            /** @var Token $tokenEntity */
+            $tokenEntity = Bus::dispatchNow(new AuthenticateUserCommand(CredentialsDto::fromState($newUserArr)));
         } catch (ExceptionAuth $e) {
             throw new AuthorizationError('Не верный логин или пароль');
-        } catch (Throwable $exception) {
-            throw new AuthorizationError('Не получилось создать пользователя');
         }
 
         return [
             'user' => $userEntity->toArray(),
             'token' => $tokenEntity->toArray()
-        ];*/
-        return [];
+        ];
     }
 
 }
