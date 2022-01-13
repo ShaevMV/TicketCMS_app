@@ -47,9 +47,13 @@ class AuthenticateUserTest extends TestCase
             new class implements AuthRepository {
                 use TokenTestCase;
 
-                #[Pure] public function getTokenUser(CredentialsDto $username): Token
+                #[Pure] public function authUser(CredentialsDto $username): Token
                 {
                     return $this->getToken();
+                }
+
+                public function logoutUser(): void
+                {
                 }
             }
         );

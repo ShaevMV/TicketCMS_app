@@ -83,7 +83,7 @@ final class FilterList
      *
      * @return Builder|BuilderQuery|null
      */
-    public function filtration($builder, Model $model)
+    public function filtration($builder, Model $model): Builder|BuilderQuery|null
     {
         $result = null;
 

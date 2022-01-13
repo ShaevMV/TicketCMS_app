@@ -8,5 +8,6 @@ use Ticket\Auth\Domain\Token\Token;
 
 interface AuthRepository
 {
-    public function getTokenUser(CredentialsDto $username): Token;
+    public function authUser(CredentialsDto $username): Token;
+    public function logoutUser(): void;
 }

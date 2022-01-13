@@ -44,7 +44,7 @@ abstract class FilterFieldsAbstract
     {
         return $this->filterItem;
     }
-
+// is_marka_BMW
     /**
      * Вывести значения по котором осуществляется фильтрация
      *

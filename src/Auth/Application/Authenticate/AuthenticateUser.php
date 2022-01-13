@@ -16,6 +16,11 @@ class AuthenticateUser
 
     public function authenticate(CredentialsDto $credentialsDto): Token
     {
-        return $this->repository->getTokenUser($credentialsDto);
+        return $this->repository->authUser($credentialsDto);
+    }
+
+    public function reAuthenticate(): void
+    {
+        $this->repository->logoutUser();
     }
 }

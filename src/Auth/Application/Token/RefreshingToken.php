@@ -13,8 +13,8 @@ class RefreshingToken
     ){
     }
 
-    public function refresh(JWTGuard $auth): Token
+    public function refresh(): Token
     {
-        return $this->tokenRepository->refreshToken($auth);
+        return $this->tokenRepository->refreshToken();
     }
 }

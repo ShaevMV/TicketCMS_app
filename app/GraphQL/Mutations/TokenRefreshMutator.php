@@ -36,10 +36,8 @@ class TokenRefreshMutator extends Mutation
         ResolveInfo $resolveInfo,
         Closure $getSelectFields
     ): array {
-        /** @var JWTGuard $auth */
-        $auth = Auth::guard('api');
         /** @var Token $result */
-        $result = Bus::dispatchNow(new RefreshingTokenCommand($auth));
+        $result = Bus::dispatchNow(new RefreshingTokenCommand());
 
         return $result->toArray();
     }

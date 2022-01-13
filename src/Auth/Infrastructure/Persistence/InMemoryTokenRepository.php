@@ -2,7 +2,9 @@
 
 namespace Ticket\Auth\Infrastructure\Persistence;
 
+use DomainException;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Facades\Auth;
 use Ticket\Auth\Domain\Authenticate\AuthRepository;
 use Ticket\Auth\Domain\Authenticate\CredentialsDto;
 use Ticket\Auth\Domain\Authenticate\ExceptionAuth;
@@ -18,11 +20,23 @@ class InMemoryTokenRepository implements AuthRepository, TokenRepository
 {
     /** @var int Время жизни токена */
     private const LIFE_TIME = 60;
+    private JWTGuard $JWTGuard;
+
+    public function __construct()
+    {
+        /** @var JWTGuard $JWTGuard */
+        $JWTGuard = Auth::guard('api');
+        if ($JWTGuard instanceof JWTGuard) {
+            $this->JWTGuard = $JWTGuard;
+        } else {
+            throw new DomainException('Не реализована служба авторизации');
+        }
+    }
 
     /**
      * @throws ExceptionAuth
      */
-    public function getTokenUser(CredentialsDto $username): Token
+    public function authUser(CredentialsDto $username): Token
     {
         if (!$token = auth()->attempt($username->toArray())) {
             throw new ExceptionAuth('Не верный логин или пароль');
@@ -45,14 +59,15 @@ class InMemoryTokenRepository implements AuthRepository, TokenRepository
     }
 
     /**
-     * @param JWTGuard $auth
-     *
      * @return Token
      */
-    public function refreshToken(JWTGuard $auth): Token
+    public function refreshToken(): Token
     {
-        $token = $auth->refresh();
+        return $this->getToken($this->JWTGuard->refresh());
+    }
 
-        return $this->getToken($token);
+    public function logoutUser(): void
+    {
+        $this->JWTGuard->logout();
     }
 }

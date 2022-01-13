@@ -13,15 +13,8 @@ class RefreshingTokenCommand extends Command
 
     protected $description = 'Обновить токен';
 
-
-    public function __construct(
-        private JWTGuard|StatefulGuard $auth
-    ){
-        parent::__construct();
-    }
-
     public function handle(RefreshingToken $refreshingToken): Token
     {
-        return $refreshingToken->refresh($this->auth);
+        return $refreshingToken->refresh();
     }
 }

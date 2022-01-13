@@ -4,7 +4,7 @@ namespace App\Ticket\Modules\PromoCode\Model;
 
 use App\Ticket\Model\Model;
 use App\Ticket\Modules\Festival\Model\FestivalModel;
-use Eloquent;
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
@@ -59,10 +59,7 @@ class PromoCodeModel extends Model
         'status',
     ];
 
-    /**
-     * @return HasOne
-     */
-    public function festival()
+    public function festival(): HasOne
     {
         return $this->hasOne(FestivalModel::class, 'id', 'festival_id');
     }
